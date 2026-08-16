@@ -1,5 +1,6 @@
 package domain;
 
+import dtos.ExerciseDTO;
 import dtos.WorkoutDTO;
 
 import java.util.ArrayList;
@@ -64,8 +65,15 @@ public class Controller {
     private Collection<WorkoutDTO> createWorkoutDTOs(Collection<Workout> workouts) {
         Collection<WorkoutDTO> workoutDTOs = new ArrayList<>();
         for (Workout workout1 : workouts) {
-            workoutDTOs.add(WorkoutDTO.createWorkoutDTO(workout));
+            workoutDTOs.add(WorkoutDTO.createWorkoutDTO(workout1));
         }
         return workoutDTOs;
+    }
+
+    private Collection<ExerciseDTO> createExerciseDTOs(Collection<Exercise> exercises) {
+        Collection<ExerciseDTO> exerciseDTOs = new ArrayList<>();
+        for (Exercise exercise1 : exercises) {
+            exercises.add(ExerciseDTO.createExerciseDTO(exercise1));
+        }
     }
 }
