@@ -5,7 +5,6 @@ import dtos.WorkoutDTO;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class Controller {
     private Workout workout;
@@ -73,7 +72,8 @@ public class Controller {
     private Collection<ExerciseDTO> createExerciseDTOs(Collection<Exercise> exercises) {
         Collection<ExerciseDTO> exerciseDTOs = new ArrayList<>();
         for (Exercise exercise1 : exercises) {
-            exercises.add(ExerciseDTO.createExerciseDTO(exercise1));
+            exerciseDTOs.add(ExerciseDTO.createExerciseDTO(exercise1));
         }
+        return exerciseDTOs;
     }
 }
