@@ -24,6 +24,10 @@ public class ExerciseSet {
         return reps;
     }
 
+    public RepTarget getRepTarget() {
+        return repTarget;
+    }
+
     public String getNotes() {
         return notes;
     }

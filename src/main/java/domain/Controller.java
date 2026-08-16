@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.List;
+
 public class Controller {
     private Workout workout;
     private Exercise exercise;
@@ -17,6 +19,15 @@ public class Controller {
 
     public void addExercise(String name, int amountOfSets, int restTimeInSeconds) {
         workout.addExercise(name, amountOfSets, restTimeInSeconds);
+    }
+
+    public void addSetToExercise(int setNumber, int reps, RepTarget repTarget) {
+        exercise.addSet(setNumber, reps, repTarget);
+    }
+
+    // TODO: Do we need to implement DTO for all data returned back to the CUI/UI layer?
+    public List<RepTarget> giveAllSetsForExercise() {
+        return exercise.getRepTargetsForEverySet();
     }
 
     // Select specific object methods
