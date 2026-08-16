@@ -1,5 +1,9 @@
 package domain;
 
+import dtos.WorkoutDTO;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class Controller {
@@ -25,9 +29,10 @@ public class Controller {
         exercise.addSet(setNumber, reps, repTarget);
     }
 
-    // TODO: Do we need to implement DTO for all data returned back to the CUI/UI layer?
-    public List<RepTarget> giveAllSetsForExercise() {
-        return exercise.getRepTargetsForEverySet();
+    // Return DTO objects
+
+    public Collection<WorkoutDTO> giveAllWorkouts() {
+        return createWorkoutDTOs(workoutRepository.giveAllWorkouts());
     }
 
     // Select specific object methods
@@ -54,5 +59,13 @@ public class Controller {
                 .orElseThrow(() -> new IllegalArgumentException(
                         String.format("Exercise %s does not exist!", name)
                 ));
+    }
+
+    private Collection<WorkoutDTO> createWorkoutDTOs(Collection<Workout> workouts) {
+        Collection<WorkoutDTO> workoutDTOs = new ArrayList<>();
+        for (Workout workout1 : workouts) {
+            workoutDTOs.add(WorkoutDTO.createWorkoutDTO(workout));
+        }
+        return workoutDTOs;
     }
 }
