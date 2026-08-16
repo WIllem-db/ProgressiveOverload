@@ -49,12 +49,4 @@ public class Exercise {
     public void addSet(int setNumber, int reps, RepTarget repTarget) {
         sets.add(new ExerciseSet(setNumber, reps, repTarget));
     }
-
-    public List<RepTarget> getRepTargetsForEverySet() {
-        List<RepTarget> repTargets = new ArrayList<>();
-        for (ExerciseSet set : sets) {
-            repTargets.add(set.getRepTarget());
-        }
-        return repTargets;
-    }
 }

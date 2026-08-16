@@ -12,7 +12,7 @@ public class ExerciseRepository {
         mapper = new ExerciseMapper();
     }
 
-    private Collection<Exercise> giveAllExercises() {
+    public Collection<Exercise> giveAllExercises() {
         return mapper.giveExercises();
     }
 

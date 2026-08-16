@@ -12,7 +12,7 @@ public class WorkoutRepository {
         mapper = new WorkoutMapper();
     }
 
-    private Collection<Workout> giveAllWorkouts() {
+    public Collection<Workout> giveAllWorkouts() {
         return mapper.giveWorkouts();
     }
 

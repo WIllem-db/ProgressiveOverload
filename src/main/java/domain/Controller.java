@@ -35,6 +35,10 @@ public class Controller {
         return createWorkoutDTOs(workoutRepository.giveAllWorkouts());
     }
 
+    public Collection<ExerciseDTO> giveAllExercises() {
+        return createExerciseDTOs(exerciseRepository.giveAllExercises());
+    }
+
     // Select specific object methods
 
     private void selectWorkout(String name) {
