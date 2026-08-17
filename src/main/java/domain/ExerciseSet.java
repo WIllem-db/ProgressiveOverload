@@ -2,13 +2,11 @@ package domain;
 
 public class ExerciseSet {
     private int setNumber;
-    private int reps;
     private RepTarget repTarget;
     private String notes;
 
-    public ExerciseSet(int setNumber, int reps, RepTarget repTarget) {
+    public ExerciseSet(int setNumber, RepTarget repTarget) {
         this.setNumber = setNumber;
-        this.reps = reps;
         this.repTarget = repTarget;
     }
 
@@ -18,10 +16,6 @@ public class ExerciseSet {
 
     public int getSetNumber() {
         return setNumber;
-    }
-
-    public int getReps() {
-        return reps;
     }
 
     public RepTarget getRepTarget() {

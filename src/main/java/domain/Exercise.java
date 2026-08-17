@@ -18,6 +18,10 @@ public class Exercise {
         isPrimaryExercise = false;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public void setRestTimeInSeconds(int restTimeInSeconds) {
         this.restTimeInSeconds = restTimeInSeconds;
     }
@@ -46,7 +50,7 @@ public class Exercise {
         return sets;
     }
 
-    public void addSet(int setNumber, int reps, RepTarget repTarget) {
-        sets.add(new ExerciseSet(setNumber, reps, repTarget));
+    public void addSet(int setNumber, RepTarget repTarget) {
+        sets.add(new ExerciseSet(setNumber, repTarget));
     }
 }
