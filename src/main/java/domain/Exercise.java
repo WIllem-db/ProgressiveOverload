@@ -9,6 +9,7 @@ public class Exercise {
     private int restTimeInSeconds;
     private List<ExerciseSet> sets;
     private boolean isPrimaryExercise;
+    private String notes;
 
     public Exercise(String name, int amountOfSets, int restTimeInSeconds) {
         this.name = name;
@@ -30,6 +31,10 @@ public class Exercise {
         isPrimaryExercise = true;
     }
 
+    public void setNotes(String notes) {
+        this.notes = notes;
+    }
+
     public String getName() {
         return name;
     }
@@ -48,6 +53,10 @@ public class Exercise {
 
     public List<ExerciseSet> getSets() {
         return sets;
+    }
+
+    public String getNotes() {
+        return notes;
     }
 
     public void addSet(int setNumber, RepTarget repTarget) {

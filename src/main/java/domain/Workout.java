@@ -12,8 +12,8 @@ public class Workout {
         exercises = new ArrayList<>();
     }
 
-    public void addExercise(String name, int amountOfSets, int restTimeInSeconds) {
-        exercises.add(new Exercise(name, amountOfSets, restTimeInSeconds));
+    public void addExercise(Exercise exercise) {
+        exercises.add(exercise);
     }
 
     public void switchExercise(String nameCurrentExercise, String nameNewExercise, int amountOfSets, int restTimeInSeconds) {

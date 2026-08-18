@@ -2,15 +2,14 @@ package domain;
 
 import dtos.ExerciseDTO;
 import dtos.WorkoutDTO;
-import dtos.WorkoutProgramDTO;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 public class Controller {
-    private Workout workout;
-    private Exercise exercise;
+    private Workout selectedWorkout;
+    private Exercise selectedExercise;
     /// {@code workoutProgram} represents the full routine of all workouts + rest days
     private WorkoutProgram workoutProgram;
     private WorkoutRepository workoutRepository;
@@ -26,19 +25,33 @@ public class Controller {
     }
 
     public void addExercise(String name, int amountOfSets, int restTimeInSeconds) {
-        workout.addExercise(name, amountOfSets, restTimeInSeconds);
+        Exercise exercise = new Exercise(name, amountOfSets, restTimeInSeconds);
+        selectedWorkout.addExercise(exercise);
+        exerciseRepository.addExerciseToList(exercise);
     }
 
-    public void addSetToExercise(int setNumber, int reps, RepTarget repTarget) {
-        exercise.addSet(setNumber, reps, repTarget);
+    public void addNotesToExercise(String notes) {
+        selectedExercise.setNotes(notes);
+    }
+
+    public void addFixedRepsToExerciseSet(int setNumber, int reps) {
+        addSetToExercise(setNumber, new RepTarget.Fixed(reps));
+    }
+
+    public void addRepRangeExerciseSet(int setNumber, int min, int max) {
+        addSetToExercise(setNumber, new RepTarget.Range(min, max));
+    }
+
+    public void addRestPauseRepsToExerciseSet(int setNumber, List<Integer> reps) {
+        addSetToExercise(setNumber, new RepTarget.RestPause(reps));
     }
 
     public void switchExercise(String nameCurrentExercise, String nameNewExercise, int amountOfSets, int restTimeInSeconds) {
-        workout.switchExercise(nameCurrentExercise, nameNewExercise, amountOfSets, restTimeInSeconds);
+        selectedWorkout.switchExercise(nameCurrentExercise, nameNewExercise, amountOfSets, restTimeInSeconds);
     }
 
     public void switchExerciseName(String currentName, String newName) {
-        workout.switchExerciseName(currentName, newName);
+        selectedWorkout.switchExerciseName(currentName, newName);
     }
 
     public void createWorkoutProgram(String name) {
@@ -56,6 +69,10 @@ public class Controller {
         workoutProgram.initializeFullRoutine(workouts);
     }
 
+    public String giveFullWorkoutProgram() {
+        return buildWorkoutProgramString();
+    }
+
     // Return DTO objects
 
     public Collection<WorkoutDTO> giveAllWorkouts() {
@@ -68,12 +85,12 @@ public class Controller {
 
     // Select specific object methods
 
-    private void selectWorkout(String name) {
-        workout = getWorkoutByName(name);
+    public void selectWorkout(String name) {
+        selectedWorkout = getWorkoutByName(name);
     }
 
-    private void selectExercise(String name) {
-        exercise = getExerciseByName(name);
+    public void selectExercise(String name) {
+        selectedExercise = getExerciseByName(name);
     }
 
     // Private helper methods
@@ -108,11 +125,30 @@ public class Controller {
         return exerciseDTOs;
     }
 
-    private Collection<WorkoutProgramDTO> createWorkoutProgramDTO(Collection<WorkoutProgram> workoutPrograms) {
-        Collection<WorkoutProgramDTO> workoutProgramDTOs = new ArrayList<>();
-        for (WorkoutProgram program : workoutPrograms) {
-            workoutProgramDTOs.add(WorkoutProgramDTO.createWorkoutProgramDTO(program));
+    private String buildWorkoutProgramString() {
+        // workout
+        // Exercise + sets + reptarget(s) + restTime + notes
+        List<Workout> workouts = workoutProgram.getFullRoutine();
+        String workoutProgramString = "";
+        for (Workout workout : workouts) {
+            workoutProgramString += String.format("%s%n", workout);
+            for (Exercise exercise : workout.getExercises()) {
+                workoutProgramString += String.format(
+                        "%s  %d  ",
+                        exercise,
+                        exercise.getAmountOfSets()
+                );
+                List<RepTarget> repTargets = new ArrayList<>();
+                for (ExerciseSet set : exercise.getSets()) {
+                    repTargets.add(set.getRepTarget());
+                }
+                workoutProgramString += String.format("%s  %s%n", repTargets, !exercise.getNotes().isBlank() ? exercise.getNotes() : "");
+            }
         }
-        return workoutProgramDTOs;
+        return workoutProgramString;
+    }
+
+    private void addSetToExercise(int setNumber, RepTarget repTarget) {
+        selectedExercise.addSet(setNumber, repTarget);
     }
 }

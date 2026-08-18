@@ -13,32 +13,33 @@ public class WorkoutApplicatie {
     }
 
     public void start() {
-        addWorkout();
+        createFullProgram();
+        showFullProgram();
     }
 
-    private void addWorkout() {
-        boolean stop = false;
-        while (!stop) {
-            System.out.print("Workout name: ");
-            String name = scanner.nextLine();
-            controller.createNewWorkout(name);
-            addExercise();
+    private void createFullProgram() {
+        controller.createNewWorkout("Push 1");
+        controller.selectWorkout("Push 1");
+        // Exercise 1
+        controller.addExercise("High incline machine press", 2, 180);
+        controller.selectExercise("High incline machine press");
+        controller.addRepRangeExerciseSet(1, 5, 9);
+        controller.addRepRangeExerciseSet(2, 10, 12);
+        // Exercise 2
+        controller.addExercise("Flat DB press", 2, 180);
+        controller.selectExercise("Flat DB press");
+        controller.addRepRangeExerciseSet(1, 5, 9);
+        controller.addRepRangeExerciseSet(2, 10, 12);
+
+        controller.addExercise("Abs", 4, 60);
+        controller.selectExercise("Abs");
+        controller.addNotesToExercise("Choose any ab exercise");
+        for (int i = 0; i < 4; i++) {
+            controller.addFixedRepsToExerciseSet(i, 15);
         }
     }
 
-    private void addExercise() {
-        boolean stop = false;
-        while (!stop) {
-            System.out.print("Exercise name: ");
-            String name = scanner.nextLine();
-            System.out.print("Amount of sets: ");
-            int amountOfSets = Integer.parseInt(scanner.nextLine());
-            System.out.print("Rest time in seconds (enter 0 if irrelevant): ");
-            int restTimeInSeconds = Integer.parseInt(scanner.nextLine());
-            controller.addExercise(name, amountOfSets, restTimeInSeconds);
-            System.out.print("1. Continue\n2.Stop\nEnter: ");
-            int answer = Integer.parseInt(scanner.nextLine());
-            stop = answer != 1;
-        }
+    private void showFullProgram() {
+        System.out.print(controller.giveFullWorkoutProgram());
     }
 }
