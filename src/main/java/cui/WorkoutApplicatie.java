@@ -37,6 +37,8 @@ public class WorkoutApplicatie {
         for (int i = 0; i < 4; i++) {
             controller.addFixedRepsToExerciseSet(i, 15);
         }
+
+        controller.createWorkoutProgram("PPL");
     }
 
     private void showFullProgram() {

@@ -6,11 +6,11 @@ import dtos.WorkoutDTO;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Controller {
     private Workout selectedWorkout;
     private Exercise selectedExercise;
-    /// {@code workoutProgram} represents the full routine of all workouts + rest days
     private WorkoutProgram workoutProgram;
     private WorkoutRepository workoutRepository;
     private ExerciseRepository exerciseRepository;
@@ -56,6 +56,7 @@ public class Controller {
 
     public void createWorkoutProgram(String name) {
         workoutProgram = new WorkoutProgram(name);
+        workoutProgram.initializeFullRoutine((List<Workout>) workoutRepository.giveAllWorkouts());
     }
 
     public void setFullRotation(List<String> workoutNames) {
@@ -131,18 +132,28 @@ public class Controller {
         List<Workout> workouts = workoutProgram.getFullRoutine();
         String workoutProgramString = "";
         for (Workout workout : workouts) {
-            workoutProgramString += String.format("%s%n", workout);
+            workoutProgramString += String.format("%s%n", workout.getName());
             for (Exercise exercise : workout.getExercises()) {
                 workoutProgramString += String.format(
                         "%s  %d  ",
-                        exercise,
+                        exercise.getName(),
                         exercise.getAmountOfSets()
                 );
-                List<RepTarget> repTargets = new ArrayList<>();
+                List<String> repTargets = new ArrayList<>();
                 for (ExerciseSet set : exercise.getSets()) {
-                    repTargets.add(set.getRepTarget());
+                    RepTarget repTarget = set.getRepTarget();
+                    if (repTarget instanceof RepTarget.Fixed fixed) {
+                        repTargets.add(String.valueOf(fixed.reps()));
+                    } else if (repTarget instanceof RepTarget.Range range) {
+                        repTargets.add(String.format("%d-%d", range.min(), range.max()));
+                    } else if (repTarget instanceof RepTarget.RestPause restPause) {
+                        repTargets.add(restPause.reps()
+                                .stream()
+                                .map(Object::toString)
+                                .collect(Collectors.joining(", ")));
+                    }
                 }
-                workoutProgramString += String.format("%s  %s%n", repTargets, !exercise.getNotes().isBlank() ? exercise.getNotes() : "");
+                workoutProgramString += String.format("%s  %s%n", repTargets, exercise.getNotes() != null ? exercise.getNotes() : "");
             }
         }
         return workoutProgramString;
